@@ -1,0 +1,8 @@
+body {
+	position: relative;
+    font-family: "Lucida Console", Courier, monospace;
+	margin: 0;
+}
+h1 {
+	font-size: 48px;
+}

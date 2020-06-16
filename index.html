@@ -1,10 +1,47 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SortingVisualizer</title>
-</head>
-<body>
-   <script src='index.js'></script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>SortingVisualizer</title>
+		<link rel="stylesheet" href="index.css" />
+	</head>
+	<h1>SortingVisualizer</h1>
+
+	<!-- Header Tabs -->
+	<h4>
+		<div>
+			<span>About</span>
+			<span>Sorting Algorithms</span>
+		</div>
+	</h4>
+
+	<body>
+		<!-- Array input from user -->
+		<div>
+			<label for="arrayInput">Input Array (4 to 8 characters):</label>
+			<input
+				type="text"
+				id="arrayInput"
+				name="name"
+				required
+				minlength="5"
+				maxlength="11"
+				size="10"
+				placeholder="Input Array"
+			/>
+			<button id="submit">Submit</button>
+			<div id="displayInput"></div>
+		</div>
+
+		<!-- Sorting Visualizer -->
+		<div>
+			Current Sorting Algorithm:
+		</div>
+		<div id="sorted">
+			<div id="bubbleSort">Bubble Sort:</div>
+			<div id="insertionSort">Insertion Sort:</div>
+			<div id="mergeSort">Merge Sort:</div>
+		</div>
+		<script src="./index.js" type="module"></script>
+	</body>
 </html>
