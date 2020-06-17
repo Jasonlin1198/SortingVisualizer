@@ -1,12 +1,28 @@
+h1,
+h1:hover {
+	font-size: 3em;
+	color: #f86b52;
+	letter-spacing: 2px;
+	outline: none;
+	-webkit-transition: 500ms linear 0s;
+	-moz-transition: 500ms linear 0s;
+	-o-transition: 500ms linear 0s;
+	transition: 500ms linear 0s;
+}
+
+h1:hover {
+	text-shadow: -1px 1px 8px #b99292, 1px -1px 8px #be6a6a;
+	animation: glow 0.5s inifinite alternate;
+}
+
 body {
 	position: relative;
-	font-family: 'Lucida Console', Courier, monospace;
+	font-family: 'Lora', serif;
 	padding-left: 50px;
+	background-color: #385350;
+	color: white;
 }
-h1 {
-	font-size: 48px;
-	padding-bottom: 50px;
-}
+
 .algorithm-header {
 	padding-top: 25px;
 	padding-bottom: 25px;
@@ -16,12 +32,16 @@ h1 {
 	padding-bottom: 25px;
 }
 .array-container {
+	padding-top: 100px;
 	padding-bottom: 25px;
-	position: absolute;
+	position: relative;
 }
 .array-bar {
 	padding-top: 100px;
 	width: 100px;
 	display: inline-block;
 	margin: 0 1px;
+	background-color: white;
+	color: black;
+	text-align: center;
 }

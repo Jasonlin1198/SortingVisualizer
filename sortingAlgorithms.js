@@ -2,11 +2,14 @@
  * Optimal bubbleSorting Algorithm
  * @param {*} inputArr
  */
-let bubbleSort = (inputArr) => {
+let bubbleSort = (inputArr, bubbleSortAnimations) => {
 	let array = inputArr.slice(0)
 	let len = array.length
 	for (let i = 0; i < len; i++) {
-		for (let j = 0; j < len; j++) {
+		for (let j = i; j < len; j++) {
+			// Get indexices being compared and place into animation function
+			bubbleSortAnimations.push([i, j])
+
 			if (array[j] > array[j + 1]) {
 				let tmp = array[j]
 				array[j] = array[j + 1]

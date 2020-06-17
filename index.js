@@ -17,15 +17,21 @@ let sortButton = document.getElementById('sort')
 sortButton.addEventListener('click', sortClick)
 
 let randomSortButton = document.getElementById('randomSort')
-randomSortButton.addEventListener('click', randomClick)
+randomSortButton.addEventListener('click', randomSortClick)
 
 // Initilze Arrays
 let ARRAY = []
 let RANDOM_ARR = []
 
+let RANDOM_SIZE = 10
+let RANDOM_MIN = 1
+let RANDOM_MAX = 100
+
+let ANIMATION_SPEED = 100
+
 // Web page loaded functionality
 addEventListener('DOMContentLoaded', () => {
-	const randomArray = createRandomArray(10, 1, 100)
+	const randomArray = createRandomArray(RANDOM_SIZE, RANDOM_MIN, RANDOM_MAX)
 	visualizeArray(randomArray)
 })
 
@@ -75,17 +81,50 @@ function inputClick() {
  */
 function sortClick() {
 	removeAllChildNode(arrayContainer)
-	const sortedArray = mergeSort(ARRAY)
+	const sortedArray = bubbleSort(ARRAY)
 	visualizeArray(sortedArray)
 }
 
 /**
  * Sort random array
  */
-function randomClick() {
-	removeAllChildNode(arrayContainer)
-	const sortedRandomArray = mergeSort(RANDOM_ARR)
-	visualizeArray(sortedRandomArray)
+function randomSortClick() {
+	// removeAllChildNode(arrayContainer)
+	const animations = []
+	const sortedRandomArray = bubbleSort(RANDOM_ARR, animations)
+
+	for (let i = 0; i < animations.length; i++) {
+		const base = animations[i][0]
+		const target = animations[i][1]
+		setTimeout(() => {
+			// Revert colors of previous animation
+			if (i !== 0) {
+				document.getElementById(
+					'index-' + animations[i - 1][0].toString()
+				).style.backgroundColor = 'white'
+				document.getElementById(
+					'index-' + animations[i - 1][1].toString()
+				).style.backgroundColor = 'white'
+			}
+
+			// Set current colors being compared
+			document.getElementById(
+				'index-' + base.toString()
+			).style.backgroundColor = 'red'
+			document.getElementById(
+				'index-' + target.toString()
+			).style.backgroundColor = 'blue'
+
+			// Indices compared are the same
+			if (base === target) {
+				document.getElementById(
+					'index-' + target.toString()
+				).style.backgroundColor = 'purple'
+			}
+		}, i * ANIMATION_SPEED) // Set timeout shifted by animation speed for each animation
+	}
+
+	//	visualizeArray(sortedRandomArray)
 }
 
 /**
@@ -93,12 +132,17 @@ function randomClick() {
  * @param {*} array - array to visualize in html
  */
 function visualizeArray(array) {
+	// Creates array bar html for every element in the array
+	var index = 0
 	array.map((element) => {
 		var newDiv = document.createElement('hr')
 		newDiv.className = 'array-bar'
-		newDiv.style.height = element.toString() + 'px'
-		newDiv.innerText = element.toString()
+		newDiv.id = 'index-' + index.toString()
+		const elementString = element.toString()
+		newDiv.style.height = elementString + 'px'
+		newDiv.innerText = elementString
 		arrayContainer.appendChild(newDiv)
+		index++
 	})
 }
 
