@@ -3,17 +3,18 @@
  * @param {*} inputArr
  */
 let bubbleSort = (inputArr) => {
-	let len = inputArr.length
+	let array = inputArr.slice(0)
+	let len = array.length
 	for (let i = 0; i < len; i++) {
 		for (let j = 0; j < len; j++) {
-			if (inputArr[j] > inputArr[j + 1]) {
-				let tmp = inputArr[j]
-				inputArr[j] = inputArr[j + 1]
-				inputArr[j + 1] = tmp
+			if (array[j] > array[j + 1]) {
+				let tmp = array[j]
+				array[j] = array[j + 1]
+				array[j + 1] = tmp
 			}
 		}
 	}
-	return inputArr
+	return array
 }
 
 /**
@@ -21,24 +22,26 @@ let bubbleSort = (inputArr) => {
  * @param {*} inputArr
  */
 let insertionSort = (inputArr) => {
-	let length = inputArr.length
+	let array = inputArr.slice(0)
+	let length = array.length
 	for (let i = 1; i < length; i++) {
-		let key = inputArr[i]
+		let key = array[i]
 		let j = i - 1
-		while (j >= 0 && inputArr[j] > key) {
-			inputArr[j + 1] = inputArr[j]
+		while (j >= 0 && array[j] > key) {
+			array[j + 1] = array[j]
 			j = j - 1
 		}
-		inputArr[j + 1] = key
+		array[j + 1] = key
 	}
-	return inputArr
+	return array
 }
 
 /**
  * Optimal mergeSorting Algorithms
- * @param {*} arr
+ * @param {*} inputArr
  */
-let mergeSort = (arr) => {
+let mergeSort = (inputArr) => {
+	let arr = inputArr.slice(0)
 	var sorted = arr.slice(),
 		n = sorted.length,
 		buffer = new Array(n)

@@ -25,8 +25,8 @@
 				name="name"
 				required
 				minlength="5"
-				maxlength="11"
-				size="10"
+				maxlength="20"
+				size="30"
 				placeholder="Input Array"
 			/>
 			<button id="submit">Submit</button>
@@ -34,14 +34,19 @@
 		</div>
 
 		<!-- Sorting Visualizer -->
-		<div>
-			Current Sorting Algorithm:
+		<div class="algorithm-header">
+			-------------------Current Sorting Algorithm------------------
 		</div>
 		<div id="sorted">
-			<div id="bubbleSort">Bubble Sort:</div>
-			<div id="insertionSort">Insertion Sort:</div>
-			<div id="mergeSort">Merge Sort:</div>
+			<div id="bubbleSort" class="algorithm">Bubble Sort:</div>
+			<div id="insertionSort" class="algorithm">Insertion Sort:</div>
+			<div id="mergeSort" class="algorithm">Merge Sort:</div>
 		</div>
+		<span>
+			<button id="sort">SORT</button>
+			<button id="randomSort">SORT RANDOM</button></span
+		>
+		<div id="arrayContainer" class="array-container"></div>
 		<script src="./index.js" type="module"></script>
 	</body>
 </html>

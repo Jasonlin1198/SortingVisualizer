@@ -1,8 +1,27 @@
 body {
 	position: relative;
-    font-family: "Lucida Console", Courier, monospace;
-	margin: 0;
+	font-family: 'Lucida Console', Courier, monospace;
+	padding-left: 50px;
 }
 h1 {
 	font-size: 48px;
+	padding-bottom: 50px;
+}
+.algorithm-header {
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+
+.algorithm {
+	padding-bottom: 25px;
+}
+.array-container {
+	padding-bottom: 25px;
+	position: absolute;
+}
+.array-bar {
+	padding-top: 100px;
+	width: 100px;
+	display: inline-block;
+	margin: 0 1px;
 }
