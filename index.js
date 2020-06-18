@@ -23,11 +23,12 @@ randomSortButton.addEventListener('click', randomSortClick)
 let ARRAY = []
 let RANDOM_ARR = []
 
-let RANDOM_SIZE = 10
+let RANDOM_SIZE = 18
 let RANDOM_MIN = 1
 let RANDOM_MAX = 100
 
-let ANIMATION_SPEED = 100
+let ANIMATION_SPEED = 50
+let FINISHED_ANIMATION = true
 
 // Web page loaded functionality
 addEventListener('DOMContentLoaded', () => {
@@ -60,9 +61,9 @@ function inputClick() {
 	visualizeArray(ARRAY)
 
 	// Sorting Algorithms to copies of filteredArrays
-	let bubbleSorted = bubbleSort(filteredArray)
-	let insertionSorted = insertionSort(filteredArray)
-	let mergeSorted = mergeSort(filteredArray)
+	let bubbleSorted = bubbleSort(filteredArray, [], [])
+	let insertionSorted = insertionSort(filteredArray, [], [])
+	let mergeSorted = mergeSort(filteredArray, [], [])
 
 	// Display sorted arrays in proper divs
 	bubbleSorted.map((element) => {
@@ -76,29 +77,20 @@ function inputClick() {
 	})
 }
 
-/**
- * Sorts random array from input and visualizes it on the page when clicked
- */
-function sortClick() {
-	removeAllChildNode(arrayContainer)
-	const sortedArray = bubbleSort(ARRAY)
-	visualizeArray(sortedArray)
-}
-
-/**
- * Sort random array
- */
-function randomSortClick() {
-	// removeAllChildNode(arrayContainer)
+const performAnimations = (sortingAlg, arr) => {
 	const animations = []
-	const sortedRandomArray = bubbleSort(RANDOM_ARR, animations)
-
+	const swapAnimations = []
+	sortingAlg(arr, animations, swapAnimations)
 	for (let i = 0; i < animations.length; i++) {
 		const base = animations[i][0]
 		const target = animations[i][1]
 		setTimeout(() => {
-			// Revert colors of previous animation
-			if (i !== 0) {
+			// Revert colors of previous animation if non-null
+			if (
+				i !== 0 &&
+				document.getElementById('index-' + animations[i - 1][0].toString()) &&
+				document.getElementById('index-' + animations[i - 1][1].toString())
+			) {
 				document.getElementById(
 					'index-' + animations[i - 1][0].toString()
 				).style.backgroundColor = 'white'
@@ -106,14 +98,27 @@ function randomSortClick() {
 					'index-' + animations[i - 1][1].toString()
 				).style.backgroundColor = 'white'
 			}
-
-			// Set current colors being compared
-			document.getElementById(
-				'index-' + base.toString()
-			).style.backgroundColor = 'red'
-			document.getElementById(
+			// Current target and base html elements
+			const baseElement = document.getElementById('index-' + base.toString())
+			const targetElement = document.getElementById(
 				'index-' + target.toString()
-			).style.backgroundColor = 'blue'
+			)
+			// Set current colors being compared if non-null
+			if (baseElement) {
+				baseElement.style.backgroundColor = 'red'
+			}
+			if (targetElement) {
+				targetElement.style.backgroundColor = 'blue'
+			}
+
+			if (swapAnimations[i]) {
+				const tempHeight = baseElement.style.height
+				const tempText = baseElement.innerText
+				baseElement.style.height = targetElement.style.height
+				baseElement.innerText = targetElement.innerText
+				targetElement.style.height = tempHeight
+				targetElement.innerText = tempText
+			}
 
 			// Indices compared are the same
 			if (base === target) {
@@ -124,7 +129,35 @@ function randomSortClick() {
 		}, i * ANIMATION_SPEED) // Set timeout shifted by animation speed for each animation
 	}
 
-	//	visualizeArray(sortedRandomArray)
+	// Prevent click before current animation is complete
+	setTimeout(() => {
+		FINISHED_ANIMATION = true
+	}, animations.length * ANIMATION_SPEED)
+}
+
+/**
+ * Sorts random array from input and visualizes it on the page when clicked
+ */
+function sortClick() {
+	if (FINISHED_ANIMATION === true) {
+		removeAllChildNode(arrayContainer)
+		FINISHED_ANIMATION = false
+		visualizeArray(bubbleSort(ARRAY, [], []))
+	}
+}
+
+/**
+ * Sort random array
+ */
+function randomSortClick() {
+	console.log(FINISHED_ANIMATION)
+
+	if (FINISHED_ANIMATION === true) {
+		FINISHED_ANIMATION = false
+		removeAllChildNode(arrayContainer)
+		visualizeArray(createRandomArray(RANDOM_SIZE, RANDOM_MIN, RANDOM_MAX))
+		performAnimations(bubbleSort, RANDOM_ARR)
+	}
 }
 
 /**
