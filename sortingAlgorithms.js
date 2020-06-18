@@ -28,20 +28,42 @@ let bubbleSort = (inputArr, bubbleSortAnimations, swapAnimations) => {
  * Optimal insertionSorting Algorithm
  * @param {*} inputArr
  */
-let insertionSort = (inputArr) => {
+let insertionSort = (inputArr, insertionSortAnimations, swapAnimations) => {
 	let array = inputArr.slice(0)
 	let length = array.length
+	let base
+	let target
 	for (let i = 1; i < length; i++) {
 		let key = array[i]
 		let j = i - 1
+		base = i
+		target = i - 1
+		// Starting comparison on next for loop iter
+		insertionSortAnimations.push([base, target])
+		console.log(base)
+		console.log(target)
+		swapAnimations.push(0)
 		while (j >= 0 && array[j] > key) {
 			array[j + 1] = array[j]
 			j = j - 1
+
+			insertionSortAnimations.push([base, target])
+			swapAnimations.push(1)
+			base--
+			target--
 		}
+
 		array[j + 1] = key
 	}
 	return array
 }
+
+// if (
+// 	insertionSortAnimations[insertionSortAnimations.length - 2][0] ===
+// 		base &&
+// 	insertionSortAnimations[insertionSortAnimations.length - 2][0] ===
+// 		target
+// ) {
 
 /**
  * Optimal mergeSorting Algorithms

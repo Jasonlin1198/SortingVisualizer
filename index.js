@@ -16,16 +16,19 @@ let arrayContainer = document.getElementById('arrayContainer')
 let sortButton = document.getElementById('sort')
 sortButton.addEventListener('click', sortClick)
 
-let randomSortButton = document.getElementById('randomSort')
-randomSortButton.addEventListener('click', randomSortClick)
+let bubbleSortButton = document.getElementById('bubbleSortButton')
+bubbleSortButton.addEventListener('click', bubbleSortClick)
+
+let insertionSortButton = document.getElementById('insertionSortButton')
+insertionSortButton.addEventListener('click', insertionSortClick)
 
 // Initilze Arrays
 let ARRAY = []
 let RANDOM_ARR = []
 
 let RANDOM_SIZE = 18
-let RANDOM_MIN = 1
-let RANDOM_MAX = 100
+let RANDOM_MIN = 20
+let RANDOM_MAX = 150
 
 let ANIMATION_SPEED = 50
 let FINISHED_ANIMATION = true
@@ -77,6 +80,11 @@ function inputClick() {
 	})
 }
 
+/**
+ * Performs sorting algorithm and computes animation and swapping with timings
+ * @param {*} sortingAlg - sorting algorithm that sets animations
+ * @param {*} arr - array to be sorted
+ */
 const performAnimations = (sortingAlg, arr) => {
 	const animations = []
 	const swapAnimations = []
@@ -104,60 +112,44 @@ const performAnimations = (sortingAlg, arr) => {
 				'index-' + target.toString()
 			)
 			// Set current colors being compared if non-null
-			if (baseElement) {
+			if (baseElement && targetElement) {
 				baseElement.style.backgroundColor = 'red'
-			}
-			if (targetElement) {
 				targetElement.style.backgroundColor = 'blue'
-			}
 
-			if (swapAnimations[i]) {
-				const tempHeight = baseElement.style.height
-				const tempText = baseElement.innerText
-				baseElement.style.height = targetElement.style.height
-				baseElement.innerText = targetElement.innerText
-				targetElement.style.height = tempHeight
-				targetElement.innerText = tempText
+				// Swap occurs between base and target
+				if (swapAnimations[i]) {
+					const tempHeight = baseElement.style.height
+					const tempText = baseElement.innerText
+					baseElement.style.height = targetElement.style.height
+					baseElement.innerText = targetElement.innerText
+					targetElement.style.height = tempHeight
+					targetElement.innerText = tempText
+				}
 			}
-
 			// Indices compared are the same
 			if (base === target) {
 				document.getElementById(
 					'index-' + target.toString()
 				).style.backgroundColor = 'purple'
 			}
+
+			// Check lengths of arrays are equal
+			if (animations.length !== swapAnimations.length) {
+				console.log(animations.length)
+				console.log(swapAnimations.length)
+			}
 		}, i * ANIMATION_SPEED) // Set timeout shifted by animation speed for each animation
 	}
 
 	// Prevent click before current animation is complete
 	setTimeout(() => {
+		// Set all colors to finished
+		for (let j = 0; j < arr.length; j++) {
+			document.getElementById('index-' + j.toString()).style.backgroundColor =
+				'green'
+		}
 		FINISHED_ANIMATION = true
 	}, animations.length * ANIMATION_SPEED)
-}
-
-/**
- * Sorts random array from input and visualizes it on the page when clicked
- */
-function sortClick() {
-	if (FINISHED_ANIMATION === true) {
-		removeAllChildNode(arrayContainer)
-		FINISHED_ANIMATION = false
-		visualizeArray(bubbleSort(ARRAY, [], []))
-	}
-}
-
-/**
- * Sort random array
- */
-function randomSortClick() {
-	console.log(FINISHED_ANIMATION)
-
-	if (FINISHED_ANIMATION === true) {
-		FINISHED_ANIMATION = false
-		removeAllChildNode(arrayContainer)
-		visualizeArray(createRandomArray(RANDOM_SIZE, RANDOM_MIN, RANDOM_MAX))
-		performAnimations(bubbleSort, RANDOM_ARR)
-	}
 }
 
 /**
@@ -177,6 +169,42 @@ function visualizeArray(array) {
 		arrayContainer.appendChild(newDiv)
 		index++
 	})
+}
+
+/**
+ * Sorts random array from input and visualizes it on the page when clicked
+ */
+function sortClick() {
+	if (FINISHED_ANIMATION === true && ARRAY.length) {
+		removeAllChildNode(arrayContainer)
+		FINISHED_ANIMATION = false
+		visualizeArray(bubbleSort(ARRAY, [], []))
+		FINISHED_ANIMATION = true
+	}
+}
+
+/**
+ * Sort random array using insertion sort
+ */
+function insertionSortClick() {
+	if (FINISHED_ANIMATION === true) {
+		FINISHED_ANIMATION = false
+		removeAllChildNode(arrayContainer)
+		visualizeArray(createRandomArray(RANDOM_SIZE, RANDOM_MIN, RANDOM_MAX))
+		performAnimations(insertionSort, RANDOM_ARR)
+	}
+}
+
+/**
+ * Sort random array
+ */
+function bubbleSortClick() {
+	if (FINISHED_ANIMATION === true) {
+		FINISHED_ANIMATION = false
+		removeAllChildNode(arrayContainer)
+		visualizeArray(createRandomArray(RANDOM_SIZE, RANDOM_MIN, RANDOM_MAX))
+		performAnimations(bubbleSort, RANDOM_ARR)
+	}
 }
 
 /**
