@@ -49,6 +49,7 @@ slider.oninput = function () {
 // Web page loaded functionality
 addEventListener('DOMContentLoaded', () => {
 	generateRandomArray()
+	var myCodeMirror = CodeMirror(document.body)
 })
 
 /**

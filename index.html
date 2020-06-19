@@ -28,6 +28,26 @@
 	</div>
 	<div id="displayInput"></div>
 	<body>
+		<!-- Sphere Engine Code Editor and Compiler-->
+		<script>
+			SEC_HTTPS = true
+			SEC_BASE = 'compilers.widgets.sphere-engine.com'
+			;(function (d, s, id) {
+				SEC = window.SEC || (window.SEC = [])
+				var js,
+					fjs = d.getElementsByTagName(s)[0]
+				if (d.getElementById(id)) return
+				js = d.createElement(s)
+				js.id = id
+				js.src =
+					(SEC_HTTPS ? 'https' : 'http') +
+					'://' +
+					SEC_BASE +
+					'/static/sdk/sdk.js'
+				fjs.parentNode.insertBefore(js, fjs)
+			})(document, 'script', 'sphere-engine-compilers-jssdk')
+		</script>
+
 		<!-- Sorting Visualizer -->
 		<div class="algorithm-header">
 			-------------------Current Sorting Algorithm------------------
@@ -47,7 +67,7 @@
 			<input
 				type="range"
 				min="2"
-				max="90"
+				max="89"
 				value="20"
 				class="slider"
 				id="myRange"
@@ -55,6 +75,15 @@
 		</div>
 		<div id="arrayContainer" class="array-container"></div>
 		<div id="runtime"></div>
+		<div class="ide-container">
+			<div
+				id="ide"
+				class="sec-widget"
+				data-widget="79ac3ef2d4fc3d8586fbb912590868ba"
+				data-theme="dark"
+			></div>
+		</div>
+
 		<script src="./index.js" type="module"></script>
 		<script src="./sortingAlgorithms.js" type="module"></script>
 	</body>
