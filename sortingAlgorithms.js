@@ -3,7 +3,7 @@
  * @param {*} inputArr
  */
 let bubbleSort = (inputArr, bubbleSortAnimations, swapAnimations) => {
-	let array = inputArr.slice(0)
+	let array = inputArr.slice()
 	let len = array.length
 	for (let i = 0; i < len; i++) {
 		for (let j = 0, stop = len - i; j < stop; j++) {
@@ -29,7 +29,7 @@ let bubbleSort = (inputArr, bubbleSortAnimations, swapAnimations) => {
  * @param {*} inputArr
  */
 let insertionSort = (inputArr, insertionSortAnimations, swapAnimations) => {
-	let array = inputArr.slice(0)
+	let array = inputArr.slice()
 	let length = array.length
 	let base
 	let target
@@ -40,13 +40,13 @@ let insertionSort = (inputArr, insertionSortAnimations, swapAnimations) => {
 		target = i - 1
 		// Starting comparison on next for loop iter
 		insertionSortAnimations.push([base, target])
-		console.log(base)
-		console.log(target)
+		// console.log(base)
+		// console.log(target)
 		swapAnimations.push(0)
 		while (j >= 0 && array[j] > key) {
 			array[j + 1] = array[j]
 			j = j - 1
-
+			// Push currently swapping indexes
 			insertionSortAnimations.push([base, target])
 			swapAnimations.push(1)
 			base--
@@ -58,19 +58,12 @@ let insertionSort = (inputArr, insertionSortAnimations, swapAnimations) => {
 	return array
 }
 
-// if (
-// 	insertionSortAnimations[insertionSortAnimations.length - 2][0] ===
-// 		base &&
-// 	insertionSortAnimations[insertionSortAnimations.length - 2][0] ===
-// 		target
-// ) {
-
 /**
  * Optimal mergeSorting Algorithms
  * @param {*} inputArr
  */
-let mergeSort = (inputArr) => {
-	let arr = inputArr.slice(0)
+let mergeSort = (inputArr, mergeSortAnimations, swapAnimations) => {
+	let arr = inputArr.slice()
 	var sorted = arr.slice(),
 		n = sorted.length,
 		buffer = new Array(n)
@@ -82,18 +75,29 @@ let mergeSort = (inputArr) => {
 				leftLimit = right,
 				rightLimit = Math.min(right + size, n),
 				i = left
+
 			while (left < leftLimit && right < rightLimit) {
+				mergeSortAnimations.push([left, right])
+				swapAnimations.push(0)
 				if (sorted[left] <= sorted[right]) {
 					buffer[i++] = sorted[left++]
+					mergeSortAnimations.push([left, i])
+					swapAnimations.push(1)
 				} else {
 					buffer[i++] = sorted[right++]
+					mergeSortAnimations.push([right, i])
+					swapAnimations.push(1)
 				}
 			}
 			while (left < leftLimit) {
 				buffer[i++] = sorted[left++]
+				mergeSortAnimations.push([left, i])
+				swapAnimations.push(1)
 			}
 			while (right < rightLimit) {
 				buffer[i++] = sorted[right++]
+				mergeSortAnimations.push([right, i])
+				swapAnimations.push(1)
 			}
 		}
 		var temp = sorted,

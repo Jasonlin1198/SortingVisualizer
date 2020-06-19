@@ -8,31 +8,26 @@
 	<h1>SortingVisualizer</h1>
 
 	<!-- Header Tabs -->
-	<h4>
-		<div>
-			<span>About</span>
-			<span>Sorting Algorithms</span>
-		</div>
-	</h4>
+	<h4></h4>
 
+	<!-- Array input from user -->
+	<div id="inputHeading">
+		<label for="arrayInput">Input Array (ex. 1,2,3,4 ) :</label>
+		<input
+			type="text"
+			id="arrayInput"
+			class="form-input"
+			name="name"
+			required
+			minlength="5"
+			maxlength="20"
+			size="30"
+			placeholder="Input Array"
+		/>
+		<a href="#" class="square_btn" id="submit">Submit</a>
+	</div>
+	<div id="displayInput"></div>
 	<body>
-		<!-- Array input from user -->
-		<div>
-			<label for="arrayInput">Input Array (4 to 8 characters):</label>
-			<input
-				type="text"
-				id="arrayInput"
-				name="name"
-				required
-				minlength="5"
-				maxlength="20"
-				size="30"
-				placeholder="Input Array"
-			/>
-			<button id="submit">Submit</button>
-			<div id="displayInput"></div>
-		</div>
-
 		<!-- Sorting Visualizer -->
 		<div class="algorithm-header">
 			-------------------Current Sorting Algorithm------------------
@@ -43,11 +38,23 @@
 			<div id="mergeSort" class="algorithm">Merge Sort:</div>
 		</div>
 		<span>
-			<button id="sort">SORT</button>
-			<button id="bubbleSortButton">BUBBLE SORT</button>
-			<button id="insertionSortButton">INSERTION SORT</button>
+			<a href="#" class="square_btn" id="randomArray">GENERATE RANDOM ARRAY</a>
+			<a href="#" class="square_btn" id="bubbleSortButton">BUBBLE SORT</a>
+			<a href="#" class="square_btn" id="insertionSortButton">INSERTION SORT</a>
+			<a href="#" class="square_btn" id="mergeSortButton">MERGE SORT</a>
 		</span>
+		<div class="slidecontainer">
+			<input
+				type="range"
+				min="2"
+				max="90"
+				value="20"
+				class="slider"
+				id="myRange"
+			/>
+		</div>
 		<div id="arrayContainer" class="array-container"></div>
+		<div id="runtime"></div>
 		<script src="./index.js" type="module"></script>
 		<script src="./sortingAlgorithms.js" type="module"></script>
 	</body>

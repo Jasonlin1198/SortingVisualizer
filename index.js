@@ -1,20 +1,23 @@
 import { bubbleSort, insertionSort, mergeSort } from './sortingAlgorithms.js'
 
-// input html elements
+// Input html elements
 let inputText = document.getElementById('arrayInput')
 let inputResult = document.getElementById('displayInput')
 let inputButton = document.getElementById('submit')
 inputButton.addEventListener('click', inputClick)
 
-// optimal sort html elements
+let inputHeading = document.getElementById('inputHeading')
+
+// Optimal sort html elements
 let bubbleSortDiv = document.getElementById('bubbleSort')
 let insertionSortDiv = document.getElementById('insertionSort')
 let mergeSortDiv = document.getElementById('mergeSort')
 
-// array sort visual html element
+// Array sort visual html element
 let arrayContainer = document.getElementById('arrayContainer')
-let sortButton = document.getElementById('sort')
-sortButton.addEventListener('click', sortClick)
+
+let randomArrayButton = document.getElementById('randomArray')
+randomArrayButton.addEventListener('click', generateRandomArray)
 
 let bubbleSortButton = document.getElementById('bubbleSortButton')
 bubbleSortButton.addEventListener('click', bubbleSortClick)
@@ -22,32 +25,59 @@ bubbleSortButton.addEventListener('click', bubbleSortClick)
 let insertionSortButton = document.getElementById('insertionSortButton')
 insertionSortButton.addEventListener('click', insertionSortClick)
 
+let mergeSortButton = document.getElementById('mergeSortButton')
+mergeSortButton.addEventListener('click', mergeSortClick)
+
+let runtimeDiv = document.getElementById('runtime')
+let slider = document.getElementById('myRange')
+
 // Initilze Arrays
 let ARRAY = []
-let RANDOM_ARR = []
-
-let RANDOM_SIZE = 18
-let RANDOM_MIN = 20
+let RANDOM_SIZE = 20
+let RANDOM_MIN = 10
 let RANDOM_MAX = 150
 
-let ANIMATION_SPEED = 50
+// Animation settings
+let ANIMATION_SPEED = 1
 let FINISHED_ANIMATION = true
+
+slider.oninput = function () {
+	RANDOM_SIZE = this.value
+	generateRandomArray()
+}
 
 // Web page loaded functionality
 addEventListener('DOMContentLoaded', () => {
-	const randomArray = createRandomArray(RANDOM_SIZE, RANDOM_MIN, RANDOM_MAX)
-	visualizeArray(randomArray)
+	generateRandomArray()
 })
 
 /**
  *  OnClick for input array button
  */
 function inputClick() {
-	// Clear result content
-	inputResult.textContent = 'Your Array = '
-	bubbleSortDiv.textContent = 'Bubble Sort: '
-	insertionSortDiv.textContent = 'Insertion Sort: '
-	mergeSortDiv.textContent = 'Merge Sort: '
+	if (FINISHED_ANIMATION === false) {
+		return
+	}
+	// Clear result content if input is valid
+	if (inputText.value) {
+		inputResult.textContent = 'Your Array = '
+		bubbleSortDiv.textContent = 'Bubble Sort: '
+		insertionSortDiv.textContent = 'Insertion Sort: '
+		mergeSortDiv.textContent = 'Merge Sort: '
+	} else {
+		// Remove current error message if displayed
+		if (inputHeading.childNodes[6]) {
+			inputHeading.removeChild(inputHeading.childNodes[6])
+		}
+		let inputError = document.createElement('div')
+		inputError.innerText = 'Please enter valid array'
+		inputHeading.appendChild(inputError)
+		return
+	}
+	// If current input is valid, remove error message if displayed
+	if (inputHeading.childNodes[6]) {
+		inputHeading.removeChild(inputHeading.childNodes[6])
+	}
 	removeAllChildNode(arrayContainer)
 
 	// Remove non-numberic characters from input
@@ -59,9 +89,17 @@ function inputClick() {
 		inputResult.textContent += element + ' '
 	})
 
+	// Convert string element to int
+	for (let x = 0; x < filteredArray.length; x++) {
+		filteredArray[x] = parseInt(filteredArray[x], 10)
+	}
+
 	// Initialize global array as input array - filteredArray is changed as a reference in below sorts
 	ARRAY = filteredArray
-	visualizeArray(ARRAY)
+	// Display input array if valid array of numbers -- NaN when no input
+	if (!isNaN(ARRAY[0])) {
+		visualizeArray(ARRAY)
+	}
 
 	// Sorting Algorithms to copies of filteredArrays
 	let bubbleSorted = bubbleSort(filteredArray, [], [])
@@ -113,8 +151,8 @@ const performAnimations = (sortingAlg, arr) => {
 			)
 			// Set current colors being compared if non-null
 			if (baseElement && targetElement) {
-				baseElement.style.backgroundColor = 'red'
-				targetElement.style.backgroundColor = 'blue'
+				baseElement.style.backgroundColor = '#fc2003'
+				targetElement.style.backgroundColor = '#0356fc'
 
 				// Swap occurs between base and target
 				if (swapAnimations[i]) {
@@ -127,7 +165,10 @@ const performAnimations = (sortingAlg, arr) => {
 				}
 			}
 			// Indices compared are the same
-			if (base === target) {
+			if (
+				base === target &&
+				document.getElementById('index-' + target.toString())
+			) {
 				document.getElementById(
 					'index-' + target.toString()
 				).style.backgroundColor = 'purple'
@@ -146,9 +187,11 @@ const performAnimations = (sortingAlg, arr) => {
 		// Set all colors to finished
 		for (let j = 0; j < arr.length; j++) {
 			document.getElementById('index-' + j.toString()).style.backgroundColor =
-				'green'
+				'#0da636'
 		}
 		FINISHED_ANIMATION = true
+		runtimeDiv.innerText =
+			'Runtime: ' + (animations.length * ANIMATION_SPEED).toString() + ' ms'
 	}, animations.length * ANIMATION_SPEED)
 }
 
@@ -159,6 +202,7 @@ const performAnimations = (sortingAlg, arr) => {
 function visualizeArray(array) {
 	// Creates array bar html for every element in the array
 	var index = 0
+	let width = 70 / array.length
 	array.map((element) => {
 		var newDiv = document.createElement('hr')
 		newDiv.className = 'array-bar'
@@ -166,20 +210,33 @@ function visualizeArray(array) {
 		const elementString = element.toString()
 		newDiv.style.height = elementString + 'px'
 		newDiv.innerText = elementString
+		newDiv.style.width = width.toString() + '%'
 		arrayContainer.appendChild(newDiv)
 		index++
 	})
 }
 
 /**
- * Sorts random array from input and visualizes it on the page when clicked
+ * Generates random array to display
  */
-function sortClick() {
-	if (FINISHED_ANIMATION === true && ARRAY.length) {
+function generateRandomArray() {
+	if (FINISHED_ANIMATION === true) {
 		removeAllChildNode(arrayContainer)
+		const randomArray = createRandomArray(RANDOM_SIZE, RANDOM_MIN, RANDOM_MAX)
+		visualizeArray(randomArray)
+		ARRAY = randomArray
+	}
+}
+
+/**
+ * Sort random array using insertion sort
+ */
+function mergeSortClick() {
+	if (FINISHED_ANIMATION === true) {
 		FINISHED_ANIMATION = false
-		visualizeArray(bubbleSort(ARRAY, [], []))
-		FINISHED_ANIMATION = true
+		removeAllChildNode(arrayContainer)
+		visualizeArray(ARRAY)
+		performAnimations(mergeSort, ARRAY)
 	}
 }
 
@@ -190,8 +247,8 @@ function insertionSortClick() {
 	if (FINISHED_ANIMATION === true) {
 		FINISHED_ANIMATION = false
 		removeAllChildNode(arrayContainer)
-		visualizeArray(createRandomArray(RANDOM_SIZE, RANDOM_MIN, RANDOM_MAX))
-		performAnimations(insertionSort, RANDOM_ARR)
+		visualizeArray(ARRAY)
+		performAnimations(insertionSort, ARRAY)
 	}
 }
 
@@ -202,8 +259,8 @@ function bubbleSortClick() {
 	if (FINISHED_ANIMATION === true) {
 		FINISHED_ANIMATION = false
 		removeAllChildNode(arrayContainer)
-		visualizeArray(createRandomArray(RANDOM_SIZE, RANDOM_MIN, RANDOM_MAX))
-		performAnimations(bubbleSort, RANDOM_ARR)
+		visualizeArray(ARRAY)
+		performAnimations(bubbleSort, ARRAY)
 	}
 }
 
@@ -212,6 +269,8 @@ function bubbleSortClick() {
  * @param {*} parent - parent html element
  */
 function removeAllChildNode(parent) {
+	// Clear runtime div
+	runtimeDiv.innerText = ''
 	while (parent.firstChild) {
 		parent.removeChild(parent.firstChild)
 	}
@@ -239,7 +298,5 @@ function createRandomArray(size, min, max) {
 	for (let i = 0; i < size; i++) {
 		array.push(randomIntFromInterval(min, max))
 	}
-	// Set global random array
-	RANDOM_ARR = array
 	return array
 }
