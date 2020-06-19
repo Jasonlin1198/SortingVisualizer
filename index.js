@@ -1,4 +1,9 @@
-import { bubbleSort, insertionSort, mergeSort } from './sortingAlgorithms.js'
+import {
+	bubbleSort,
+	insertionSort,
+	selectionSort,
+	mergeSort,
+} from './sortingAlgorithms.js'
 
 // Input html elements
 let inputText = document.getElementById('arrayInput')
@@ -25,6 +30,9 @@ bubbleSortButton.addEventListener('click', bubbleSortClick)
 let insertionSortButton = document.getElementById('insertionSortButton')
 insertionSortButton.addEventListener('click', insertionSortClick)
 
+let selectionSortButton = document.getElementById('selectionSortButton')
+selectionSortButton.addEventListener('click', selectionSortClick)
+
 let mergeSortButton = document.getElementById('mergeSortButton')
 mergeSortButton.addEventListener('click', mergeSortClick)
 
@@ -38,7 +46,7 @@ let RANDOM_MIN = 10
 let RANDOM_MAX = 150
 
 // Animation settings
-let ANIMATION_SPEED = 1
+let ANIMATION_SPEED = 10
 let FINISHED_ANIMATION = true
 
 slider.oninput = function () {
@@ -202,7 +210,7 @@ const performAnimations = (sortingAlg, arr) => {
 function visualizeArray(array) {
 	// Creates array bar html for every element in the array
 	var index = 0
-	let width = 70 / array.length
+	let width = 68 / array.length
 	array.map((element) => {
 		var newDiv = document.createElement('hr')
 		newDiv.className = 'array-bar'
@@ -237,6 +245,15 @@ function mergeSortClick() {
 		removeAllChildNode(arrayContainer)
 		visualizeArray(ARRAY)
 		performAnimations(mergeSort, ARRAY)
+	}
+}
+
+function selectionSortClick() {
+	if (FINISHED_ANIMATION === true) {
+		FINISHED_ANIMATION = false
+		removeAllChildNode(arrayContainer)
+		visualizeArray(ARRAY)
+		performAnimations(selectionSort, ARRAY)
 	}
 }
 

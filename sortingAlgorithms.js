@@ -59,6 +59,33 @@ let insertionSort = (inputArr, insertionSortAnimations, swapAnimations) => {
 }
 
 /**
+ * Optimal selectionSorting Algorithms
+ * @param {*} arr
+ */
+let selectionSort = (inputArr, selectionSortAnimations, swapAnimations) => {
+	let arr = inputArr.slice()
+	let len = arr.length
+	for (let i = 0; i < len; i++) {
+		let min = i
+		for (let j = i + 1; j < len; j++) {
+			selectionSortAnimations.push([i, j])
+			swapAnimations.push(0)
+			if (arr[min] > arr[j]) {
+				min = j
+			}
+		}
+		if (min !== i) {
+			selectionSortAnimations.push([i, min])
+			swapAnimations.push(1)
+			let tmp = arr[i]
+			arr[i] = arr[min]
+			arr[min] = tmp
+		}
+	}
+	return arr
+}
+
+/**
  * Optimal mergeSorting Algorithms
  * @param {*} inputArr
  */
@@ -108,4 +135,4 @@ let mergeSort = (inputArr, mergeSortAnimations, swapAnimations) => {
 	return sorted
 }
 
-export { bubbleSort, insertionSort, mergeSort }
+export { bubbleSort, insertionSort, selectionSort, mergeSort }
